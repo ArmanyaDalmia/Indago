@@ -1,0 +1,27 @@
+{
+  "name": "ankibot",
+  "version": "1.0.0",
+  "description": "Discord Bot that makes use of AnkiConnect to bring your Anki decks to your Discord servers!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArmanAth/AnkiBot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "anki",
+    "js",
+    "node",
+    "study"
+  ],
+  "author": "Arman Atharinejad, Stephen Wang, David Tran // github.com/ArmanAth, github.com/Stephenwang3081, github.com/davidtran001",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArmanAth/AnkiBot/issues"
+  },
+  "homepage": "https://github.com/ArmanAth/AnkiBot#readme"
+}
