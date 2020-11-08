@@ -23,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/ArmanAth/AnkiBot/issues"
   },
-  "homepage": "https://github.com/ArmanAth/AnkiBot#readme"
+  "homepage": "https://github.com/ArmanAth/AnkiBot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "xmlhttprequest": "^1.8.0"
+  }
 }
