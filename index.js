@@ -2,6 +2,10 @@ const Schedule = require('./scheduleClass.js');
 const Discord = require("discord.js"); 
 const config = require('./config.json');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest; 
+
+const request = require('request-promise');
+const tough = require('tough-cookie');
+
 const client = new Discord.Client();
 const prefix = "!"; 
 const scheduleArr = [];
@@ -37,6 +41,7 @@ const helpText = ['!mydecks - Get a list of all the decks you currently have on 
                 ];
 const querystring = require('querystring');
 const fetch = require("node-fetch");
+
 
 function invoke(action, version, params={}) {
     return new Promise((resolve, reject) => {
@@ -280,11 +285,127 @@ client.on("message", async function(message) {
             message.reply(deleteName + " has been deleted from your schedules!");
         }
 
-    }
-    
-    else if (command == "ping"){ 
-        const timeTaken = Date.now() - message.createdTimestamp; 
-        message.reply(`Pong! This message had a latency of ${timeTaken} ms.`); 
+    } else if (command == "verifyaccount") {
+        message.author.send("Please use the command \"!login\" (without the quotations) to enter your email and password separated by a space");
+    } else if (command == "createaccount") {
+        message.author.send("Please use the command \"!newUser\" (without the quotations) to enter your email and password separated by a space");
+    } else if (command == "newuser") {
+
+        let tempArgs = args;
+        const myUsername = tempArgs.split(" ", 1);
+        tempArgs = tempArgs.replace(myUsername + " ", "");
+        const myPassword = tempArgs
+
+        let cookie = new tough.Cookie({
+            key: "New User Key",
+            value: "Random Value",
+            domain: 'ankiweb.net',
+            secure: true,
+            httpOnly: true,
+            maxAge: 31536000
+        });
+
+        var cookiejar = request.jar();
+        cookiejar.setCookie(cookie, 'https://ankiweb.net');
+
+        var options = {
+            method: 'POST',
+            uri: 'https://ankiweb.net/account/register',
+            jar: cookiejar,
+            simple: false,
+            form: {
+                username: `${myUsername}`,
+                username2: `${myUsername}`,
+                password: `${myPassword}`
+            }
+        };
+        
+        request(options)
+            .then(function (body) {
+                console.log("Account has been created");
+                console.log(body);
+            })
+            .catch(function (err) {
+                console.error(err);
+            });
+
+        message.author.send("Please go to https://ankiweb.net/account/login to complete your account creation.");
+        message.author.send("After logging in with your provided credentials, you will be directed to accept the terms and conditions.");
+        message.author.send("Lastly, you will have to verify your email address after which you're all setup!");
+
+    } else if (command == "login") {
+
+        let tempArgs = args;
+        const myUsername = tempArgs.split(" ", 1);
+        tempArgs = tempArgs.replace(myUsername + " ", "");
+        const myPassword = tempArgs
+
+        let cookie = new tough.Cookie({
+            key: "New User Key",
+            value: "Random Value",
+            domain: 'ankiweb.net',
+            secure: true,
+            httpOnly: true,
+            maxAge: 31536000
+        });
+
+        var cookiejar = request.jar();
+        cookiejar.setCookie(cookie, 'https://ankiweb.net');
+
+        var options = {
+            method: 'POST',
+            uri: 'https://ankiweb.net/account/login',
+            jar: cookiejar,
+            simple: false,
+            form: {
+                username: `${myUsername}`,
+                password: `${myPassword}`
+            }
+        };
+
+        request(options)
+            .then(function (body) {
+                console.log("You have successfully logged in");
+                console.log(body);
+            })
+            .catch(function (err) {
+                console.error(err);
+            });
+
+        message.author.send("You have successfully logged in!");
+
+    } else if (command == "pomodoro") {
+
+        let count = 1;
+        let rest = false;
+        let minute = 25;
+        let sec = 60;
+        
+        setInterval(function() {
+
+          sec--;
+          if (sec == 00) {
+
+            minute --;
+            sec = 60;
+
+            if (minute == 0) {
+
+                if (count == 4) {
+                    message.reply(`Congrats! You have finished your 4th pomodoro! Take a longer, 25 minute break. You've earned it.`);   
+                    count = 0;
+                } else {
+                    message.reply(`Congrats! You have finished ${count} out of 4 pomodoros! Take a 5 minute break. You've earned it.`);
+                    rest = true;
+                }
+
+                minute = !rest ? 25 : 5;
+                count++;
+            }
+
+          }
+
+        }, 1000);
     }
 
     //List out current decks in users anki account 
