@@ -66,29 +66,15 @@ client.on("message", async function(message) {
     }
 
     if (command == "createaccount") {
-        console.log("h");
-        const URL = "https://ankiweb.net/account/register";
-        const scrapeFormResponse = async () => {
-            const options = {
-                method: 'POST',
-                url: URL,
-                form: {
-                    "username": "temp@myinbox.icu",
-                    "username2": "temp@myinbox.icu",
-                    "password": "temp"
-                }
-            };
-            try {
-                const response = await request(options);
-                const $ = cheerio.load(response);
-                const msg = $('#case_login > h3').text();
-                console.log(msg);
-                console.log("hello");
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        scrapeFormResponse();
+        request.post('https://ankiweb.net/account/register', { simple: false}, {
+          form: {
+            username: 'temp@myinbox.icu',
+            username2: 'temp@myinbox.icu',
+            password: 'temp'
+          }
+        }, function (err, res, body) {
+            console.log('body:', body); // Print the HTML for the Google homepage.
+        })
     }
 
 }); 
