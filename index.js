@@ -59,9 +59,11 @@ client.on("message", async function(message) {
     } else if (command == "listcards"){ 
         const result = await invoke('findCards', 6, {"query": `deck:${args}`});
         message.reply(`These are the cards in ${args}: ${result}`);
+    } else if (command == "verifyaccount") {
+        message.author.send("Please use the command \"!login\" (without the quotations) to enter your email and password separated by a space");
     } else if (command == "createaccount") {
-        message.author.send("Please use the command \"!authorize\" (without the quotations) to enter your email and password separated by a space");
-    } else if (command == "authorize") {
+        message.author.send("Please use the command \"!newUser\" (without the quotations) to enter your email and password separated by a space");
+    } else if (command == "newuser") {
 
         let tempArgs = args;
         const myUsername = tempArgs.split(" ", 1);
@@ -115,6 +117,34 @@ client.on("message", async function(message) {
         message.author.send("Please go to https://ankiweb.net/account/login to complete your account creation.");
         message.author.send("After logging in with your provided credentials, you will be directed to accept the terms and conditions.");
         message.author.send("Lastly, you will have to verify your email address after which you're all setup!");
+
+    } else if (command == "login") {
+
+        let tempArgs = args;
+        const myUsername = tempArgs.split(" ", 1);
+        tempArgs = tempArgs.replace(myUsername + " ", "");
+        const myPassword = tempArgs
+
+        var options = {
+            method: 'POST',
+            uri: 'https://ankiweb.net/account/login',
+            simple: false,
+            form: {
+                username: `${myUsername}`,
+                password: `${myPassword}`
+            }
+        };
+        
+        request(options)
+            .then(function (body) {
+                console.log("You have successfully logged in");
+                console.log(body);
+            })
+            .catch(function (err) {
+                console.error(err);
+            });
+
+        message.author.send("You have successfully logged in!");
 
     }
 
