@@ -154,19 +154,23 @@ client.on("message", async function(message) {
                 server.dispatcher.end();
                 message.channel.send("Stopping song");
             }
+            break;
 
         case 'study':
             makeChannels(message);
             message.channel.send("Join your study channels");
+            break;
 
         case 'languages':
             listLanguages(message);
+            break;
 
         case 'translate':
             text = message.content.substring(message.content.indexOf(" ") + 1);
             transArg = d_args[1];
             text = text.substring(text.indexOf(" ") + 1);
             translateText(message, text, transArg);
+            break;
     }
 
     if (message.guild.connection) message.guild.voice.connection.disconnect();
