@@ -99,7 +99,7 @@ client.on("message", async function(message) {
         message.reply(`These are the cards in ${args}: ${result}`);
     }
     
-    switch (args[0]) {
+    switch (d_args[0]) {
         case 'play':
             function play(connection, message) {
                 var server = servers[message.guild.id];
@@ -110,13 +110,13 @@ client.on("message", async function(message) {
                         if (server.queue[0]) {
                             play(connection, message);
                         } else {
-                            server.queue.push(args[1]);
+                            server.queue.push(d_args[1]);
                         }
                     });
                 }
             }
 
-            if (!args[1]) {
+            if (!d_args[1]) {
                 message.channel.send("Provide a link");
                 return;
             }
@@ -131,7 +131,7 @@ client.on("message", async function(message) {
             }
 
             var server = servers[message.guild.id];
-            server.queue.push(args[1]);
+            server.queue.push(d_args[1]);
 
             if (!message.guild.voiceConnection) message.member.voice.channel.join().then(function(connection) {
                 play(connection, message);
@@ -155,9 +155,6 @@ client.on("message", async function(message) {
                 message.channel.send("Stopping song");
             }
 
-        case 'dc':
-            connection.disconnect();
-
         case 'study':
             makeChannels(message);
             message.channel.send("Join your study channels");
@@ -167,7 +164,7 @@ client.on("message", async function(message) {
 
         case 'translate':
             text = message.content.substring(message.content.indexOf(" ") + 1);
-            transArg = args[1];
+            transArg = d_args[1];
             text = text.substring(text.indexOf(" ") + 1);
             translateText(message, text, transArg);
     }
