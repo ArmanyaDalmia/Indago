@@ -16,9 +16,11 @@
     "anki",
     "js",
     "node",
-    "study"
+    "study",
+    "google cloud",
+    "api"
   ],
-  "author": "Arman Atharinejad, Stephen Wang, David Tran // github.com/ArmanAth, github.com/Stephenwang3081, github.com/davidtran001",
+  "author": "Arman Atharinejad, Stephen Wang, David Tran, Daniel Yun // github.com/ArmanAth, github.com/Stephenwang3081, github.com/davidtran001, github.com/dnlyun",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ArmanAth/AnkiBot/issues"
