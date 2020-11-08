@@ -14,7 +14,29 @@ const helpText = ['!mydecks - Get a list of all the decks you currently have on 
                 '!quizall (deck name) - Start a quiz on the specified Anki deck, where everyone on the server can try to answer',
                 '!quizme (deck name) - Start a quiz on the specified Anki deck, where only you can try to answer',
                 '!quizcontest (deck name) - Start a quiz on the specified Anki deck, where everyone can compete for points until the quiz is ended!',
+				        '!play (youtube-url) - Plays audio stream from this youtube link, also puts songs in queue',
+                '!skip - Skips current song',
+                '!stop - Stops audio',
+                '!study - Creates new text and voice channel for user',
+                '!languages - Shows list of available languages to translate',
+                '!translate (language, text) - Translates text to desired language',
+                '!ListCards (deck ID) - List IDs of cards in specified deck',
+                '!CreateDeck (name) - Creates deck with specified name',
+                '!sync - Syncs your Anki account with the Anki problem on your computer',
+                '!MentalHealh - List of mental health resources',
+                '!math (expression) - Solves simple math expressions',
+                '!CreateSchedule (Schedule Name) - Creates a schedule that can be held and defines it with a name, that the user can add to.',
+                '!FillSchedule (name, task 1, task 2, etc...) given a name, fills in tasks that must be done in the list.',
+                '!RetrieveSchedule (name) -given a name, will display all the tasks listed within the schedule that the user can see and be reminded of.',
+                '!DisplayMySchedules - displays all the schedules that the user has so they can pick which one to view',
+                '!DeleteSchedule (name) - given a name, completely wipes a schedule once it is no longer of use',
+                '!VerifyAccount - sends private message prompting user to use !login',
+                '!CreateAccount - sends private message prompting user to use !newuser',
+                '!NewUser (email, password) - Create a new user through AnkiWeb, requires user to go to website to accept terms and conditions and verify email',
+                '!login (email, password) - Use command to log into AnkiWeb account',
                 ];
+const querystring = require('querystring');
+const fetch = require("node-fetch");
 
 function invoke(action, version, params={}) {
     return new Promise((resolve, reject) => {
@@ -194,7 +216,6 @@ client.on("message", async function(message) {
             message.reply(`Your new schedule ${name} has been successfully created, tasks may now be added`);
         }
 
-
     }else if (command === "fillschedule"){//Allows user to fill schedule with tasks
         let nameOfList = args.split (" ", 1);
         let chores = args.replace (nameOfList + " ", "");
@@ -214,7 +235,6 @@ client.on("message", async function(message) {
             message.reply(`Sorry the schedule you requested does not exist, display if needed to find the correct list name`);
         }
 
-
     }else if (command === "retrieveschedule") {//Allows user to check a schedule given a name
         let nameOfList = args.split (" ", 1);
         
@@ -231,6 +251,7 @@ client.on("message", async function(message) {
         }else{
             message.reply(`Sorry the schedule you requested does not exist, display if needed to find the correct list name`);
         }
+      
     }else if (command === "displaymyschedules") {//Allows user to check a schedule given a name
         //verifies if there are any schedules
         if(scheduleArr.length == 0){
@@ -297,12 +318,46 @@ client.on("message", async function(message) {
             message.channel.send(helpText[i]); 
         }
     }
-
-    //Inform user if they entered a command that doesn't exist 
+	
+	//ListCards command
+	//List IDs of cards in specified deck
+	else if (command == "listcards"){
+		const result = await invoke('findCards', 6, {"query": `deck:${args}`});
+        message.reply(`These are the cards in ${args}: ${result}`);
+	}
+	
+	//CreateDeck command
+	//Creates deck with specified name
+	else if (command == "createdeck"){
+		const result = await invoke('createDeck', 6, {deck: `${args[0]}`});
+		message.reply(`Created deck: ${args[0]}`);
+	}
+	
+	//sync command
+	//Syncs your Anki account with the Anki problem on your computer
+	else if (command == "sync"){
+		const result = await invoke('sync', 6);
+		message.reply(`Local Anki collection has been synced with AnkiWeb`);
+	}
+	
+	//mentalhealth command 
+	//List of mental health resources
+	else if (command == "mentalhealth"){
+		message.reply(`List of Mental health resources you can access right now: https://docs.google.com/document/d/1B-rprKuuVvR8QQxq5yjTC_rgswjdzz2uUgRZbMnrnsQ/edit?usp=sharing`);
+	}
+	
+	//math.js api
+	//Solves simple math expressions
+	else if (command == 'math'){
+		const maf = await fetch(`http://api.mathjs.org/v4/?expr=${encodeURIComponent(args)}`).then(response => response.text());
+		message.channel.send(maf);
+	}
+	
+	//Inform user if they entered a command that doesn't exist 
     else if (!otherCommands.includes(command)){ 
         message.reply(`You entered an invalid command! Please use !help to get a list of commands.`)
     }
-}); 
+});
 
 //Create a discord client for the bot using private token
-client.login(config.BOT_TOKEN);
+client.login(config.BOT_TOKEN); 
