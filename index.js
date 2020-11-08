@@ -3,7 +3,8 @@ const config = require('./config.json');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest; 
 
 const request = require('request-promise');
-const cheerio = require('cheerio');
+//const cheerio = require('cheerio');
+const tough = require('tough-cookie');
 
 const client = new Discord.Client();
 const prefix = "!"; 
@@ -70,9 +71,22 @@ client.on("message", async function(message) {
         tempArgs = tempArgs.replace(myUsername + " ", "");
         const myPassword = tempArgs
 
+        let cookie = new tough.Cookie({
+            key: "New User Key",
+            value: "Random Value",
+            domain: 'ankiweb.net',
+            secure: true,
+            httpOnly: true,
+            maxAge: 31536000
+        });
+
+        var cookiejar = request.jar();
+        cookiejar.setCookie(cookie, 'https://ankiweb.net');
+
         var options = {
             method: 'POST',
             uri: 'https://ankiweb.net/account/register',
+            jar: cookiejar,
             simple: false,
             form: {
                 username: `${myUsername}`,
@@ -125,16 +139,29 @@ client.on("message", async function(message) {
         tempArgs = tempArgs.replace(myUsername + " ", "");
         const myPassword = tempArgs
 
+        let cookie = new tough.Cookie({
+            key: "New User Key",
+            value: "Random Value",
+            domain: 'ankiweb.net',
+            secure: true,
+            httpOnly: true,
+            maxAge: 31536000
+        });
+
+        var cookiejar = request.jar();
+        cookiejar.setCookie(cookie, 'https://ankiweb.net');
+
         var options = {
             method: 'POST',
             uri: 'https://ankiweb.net/account/login',
+            jar: cookiejar,
             simple: false,
             form: {
                 username: `${myUsername}`,
                 password: `${myPassword}`
             }
         };
-        
+
         request(options)
             .then(function (body) {
                 console.log("You have successfully logged in");
@@ -145,6 +172,39 @@ client.on("message", async function(message) {
             });
 
         message.author.send("You have successfully logged in!");
+
+    } else if (command == "pomodoro") {
+
+        let count = 1;
+        let rest = false;
+        let minute = 25;
+        let sec = 60;
+        
+        setInterval(function() {
+
+          sec--;
+          if (sec == 00) {
+
+            minute --;
+            sec = 60;
+
+            if (minute == 0) {
+
+                if (count == 4) {
+                    message.reply(`Congrats! You have finished your 4th pomodoro! Take a longer, 25 minute break. You've earned it.`);   
+                    count = 0;
+                } else {
+                    message.reply(`Congrats! You have finished ${count} out of 4 pomodoros! Take a 5 minute break. You've earned it.`);
+                    rest = true;
+                }
+
+                minute = !rest ? 25 : 5;
+                count++;
+            }
+
+          }
+
+        }, 1000);
 
     }
 
