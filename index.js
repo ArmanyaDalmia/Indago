@@ -1,8 +1,13 @@
 const Discord = require("discord.js"); 
 const config = require('./config.json');
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest; 
+
+const request = require('request-promise');
+const cheerio = require('cheerio');
+
 const client = new Discord.Client();
 const prefix = "!"; 
+
 
 function invoke(action, version, params={}) {
     return new Promise((resolve, reject) => {
@@ -58,6 +63,32 @@ client.on("message", async function(message) {
     if (command == "listcards"){ 
         const result = await invoke('findCards', 6, {"query": `deck:${args}`});
         message.reply(`These are the cards in ${args}: ${result}`);
+    }
+
+    if (command == "createaccount") {
+        console.log("h");
+        const URL = "https://ankiweb.net/account/register";
+        const scrapeFormResponse = async () => {
+            const options = {
+                method: 'POST',
+                url: URL,
+                form: {
+                    "username": "temp@myinbox.icu",
+                    "username2": "temp@myinbox.icu",
+                    "password": "temp"
+                }
+            };
+            try {
+                const response = await request(options);
+                const $ = cheerio.load(response);
+                const msg = $('#case_login > h3').text();
+                console.log(msg);
+                console.log("hello");
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        scrapeFormResponse();
     }
 
 }); 
