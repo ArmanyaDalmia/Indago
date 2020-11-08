@@ -40,12 +40,7 @@ client.on("message", async function(message) {
     const commandBody = message.content.slice(prefix.length); 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const command = args.shift().toLowerCase();
-
-    if (command == "ping"){ 
-        const timeTaken = Date.now() - message.createdTimestamp; 
-        message.reply(`This message had a latency of ${timeTaken} ms.`); 
-    }
-	//anki commands
+	//ankiconnect commands
     if (command == "mydecks"){
         const result = await invoke('deckNames', 6);
         message.reply(`These are your current decks: ${result}`);
@@ -58,27 +53,14 @@ client.on("message", async function(message) {
 		const result = await invoke('createDeck', 6, {deck: `${args[0]}`});
 		message.reply(`Created deck: ${args[0]}`);
 	}
-	if (command == "cardsinfo"){
-		const result = await invoke('cardsInfo', 6, {cards: `${args}`});
-		message.reply(`${result}`);
-	}
-	//deletedeck doesn't work
-	if (command == "deletedeck"){
-		const result = await invoke('deleteDecks', 6, {decks: `${args[0]}`, cardsToo: `${args[1]}`});
-		message.reply(`Deleted deck: ${args[0]}`);
-    }
-	if (command == "reloadCollection"){
-		const result = await invoke('reloadCollection', 6);
-		message.reply(`Collection Reloaded`);
-	}
 	if (command == "sync"){
 		const result = await invoke('sync', 6);
 		message.reply(`Local Anki collection has been synced with AnkiWeb`);
 	}
 	if (command == "mentalhealth"){
-		message.reply(`List of mental health resources you can access: https://docs.google.com/document/d/1B-rprKuuVvR8QQxq5yjTC_rgswjdzz2uUgRZbMnrnsQ/edit?usp=sharing`);
+		message.reply(`List of Mental health resources you can access right now: https://docs.google.com/document/d/1B-rprKuuVvR8QQxq5yjTC_rgswjdzz2uUgRZbMnrnsQ/edit?usp=sharing`);
 	} 
-	//fetch math.js api
+	//math.js api 
     if (command == 'math') {
     const maf = await fetch(`http://api.mathjs.org/v4/?expr=${encodeURIComponent(args)}`).then(response => response.text());
 	message.channel.send(maf);
@@ -87,4 +69,3 @@ client.on("message", async function(message) {
 }); 
 
 client.login(config.BOT_TOKEN); 
-
