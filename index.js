@@ -94,36 +94,12 @@ client.on("message", async function(message) {
                 password: `${myPassword}`
             }
         };
-
-        // var options2 = {
-        //     uri: 'https://ankiweb.net/account/terms',
-        //     simple: false,
-        //     transform: function (body) {
-        //         return cheerio.load(body);
-        //     }
-        // }
-
-        // var options3 = {
-        //     method: "POST",
-        //     uri: 'https://ankiweb.net/account/terms',
-        //     simple: false,
-        //     form: {}
-        // }
         
         request(options)
             .then(function (body) {
                 console.log("Account has been created");
                 console.log(body);
-                //return request(options2);
             })
-            // .then(function ($) {
-            //     $('input[type="checkbox"]').prop('checked', true);
-            //     console.log($(':checkbox').is(':checked'));
-            //     return request(options3);
-            // })
-            // .then(function (body) {
-            //     console.log(body);
-            // })
             .catch(function (err) {
                 console.error(err);
             });
