@@ -166,7 +166,6 @@ client.on("message", async function(message) {
     if(!message.content.startsWith(prefix)) return; 
 
     //Seperating the command from the arguments 
-  
     const commandBody = message.content.slice(prefix.length); 
 
     const tempCommand = commandBody.split(" ", 1);
@@ -219,4 +218,3 @@ client.on("message", async function(message) {
 
 //Create a discord client for the bot using private token
 client.login(config.BOT_TOKEN); 
-
