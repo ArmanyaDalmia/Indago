@@ -66,15 +66,37 @@ client.on("message", async function(message) {
     }
 
     if (command == "createaccount") {
-        request.post('https://ankiweb.net/account/register', { simple: false}, {
-          form: {
-            username: 'temp@myinbox.icu',
-            username2: 'temp@myinbox.icu',
-            password: 'temp'
-          }
-        }, function (err, res, body) {
-            console.log('body:', body); // Print the HTML for the Google homepage.
-        })
+        
+        var options = {
+            method: 'POST',
+            uri: 'https://ankiweb.net/account/register',
+            simple: false,
+            form: {
+                username: 'temp@myinbox.icu',
+                username2: 'temp@myinbox.icu',
+                password: 'temp'
+            }
+        };
+
+        var options2 = {
+            method: 'POST',
+            uri: 'https://ankiweb.net/account/terms',
+            simple: false,
+            form: {
+            }
+        }
+        
+        request(options)
+            .then(function (body) {
+                console.log(body);
+                return request(options2);
+            })
+            .then(function (body) {
+                console.log(body);
+            })
+            .catch(function (err) {
+                console.error(err);
+            });
     }
 
 }); 
