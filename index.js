@@ -58,7 +58,7 @@ client.on("message", async function(message) {
 		message.reply(`Local Anki collection has been synced with AnkiWeb`);
 	}
 	if (command == "mentalhealth"){
-		message.reply(`List of Mental health resources you can access right now: https://docs.google.com/document/d/1B-rprKuuVvR8QQxq5yjTC_rgswjdzz2uUgRZbMnrnsQ/edit?usp=sharing`);
+		message.reply(`List of mental health resources you can access right now: https://docs.google.com/document/d/1B-rprKuuVvR8QQxq5yjTC_rgswjdzz2uUgRZbMnrnsQ/edit?usp=sharing`);
 	} 
 	//math.js api 
     if (command == 'math') {
