@@ -25,11 +25,14 @@
   },
   "homepage": "https://github.com/ArmanAth/AnkiBot#readme",
   "dependencies": {
+    "@google-cloud/translate": "^6.0.3",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "^12.4.1",
+    "opusscript": "0.0.7",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "tough-cookie": "^4.0.0",
-    "xmlhttprequest": "^1.8.0"
+    "xmlhttprequest": "^1.8.0",
+    "ytdl-core": "^4.0.3"
   }
 }
