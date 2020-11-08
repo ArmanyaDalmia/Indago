@@ -45,6 +45,7 @@ client.on("message", async function(message) {
         const timeTaken = Date.now() - message.createdTimestamp; 
         message.reply(`This message had a latency of ${timeTaken} ms.`); 
     }
+	//anki commands
     if (command == "mydecks"){
         const result = await invoke('deckNames', 6);
         message.reply(`These are your current decks: ${result}`);
@@ -61,7 +62,7 @@ client.on("message", async function(message) {
 		const result = await invoke('cardsInfo', 6, {cards: `${args}`});
 		message.reply(`${result}`);
 	}
-	//this shit don't work 
+	//deletedeck doesn't work
 	if (command == "deletedeck"){
 		const result = await invoke('deleteDecks', 6, {decks: `${args[0]}`, cardsToo: `${args[1]}`});
 		message.reply(`Deleted deck: ${args[0]}`);
@@ -75,8 +76,9 @@ client.on("message", async function(message) {
 		message.reply(`Local Anki collection has been synced with AnkiWeb`);
 	}
 	if (command == "mentalhealth"){
-		message.reply(`List of Mental health resources you can access right now: https://docs.google.com/document/d/1B-rprKuuVvR8QQxq5yjTC_rgswjdzz2uUgRZbMnrnsQ/edit?usp=sharing`);
+		message.reply(`List of mental health resources you can access: https://docs.google.com/document/d/1B-rprKuuVvR8QQxq5yjTC_rgswjdzz2uUgRZbMnrnsQ/edit?usp=sharing`);
 	} 
+	//fetch math.js api
     if (command == 'math') {
     const maf = await fetch(`http://api.mathjs.org/v4/?expr=${encodeURIComponent(args)}`).then(response => response.text());
 	message.channel.send(maf);
