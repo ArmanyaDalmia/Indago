@@ -166,6 +166,7 @@ client.on("message", async function(message) {
     if(!message.content.startsWith(prefix)) return; 
 
     //Seperating the command from the arguments 
+  
     const commandBody = message.content.slice(prefix.length); 
 
     const tempCommand = commandBody.split(" ", 1);
