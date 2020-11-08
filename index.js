@@ -38,9 +38,12 @@ function invoke(action, version, params={}) {
 client.on("message", async function(message) {
     if(message.author.bot) return; 
     if(!message.content.startsWith(prefix)) return; 
+
     const commandBody = message.content.slice(prefix.length); 
-    const args = commandBody.split(' '); 
-    const command = args.shift().toLowerCase();
+
+    const tempCommand = commandBody.split(" ", 1);
+    const args = commandBody.replace(tempCommand + " ", "");
+    const command = tempCommand[0].toLowerCase();
 
     if (command == "ping"){ 
         const timeTaken = Date.now() - message.createdTimestamp; 
