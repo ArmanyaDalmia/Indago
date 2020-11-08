@@ -35,9 +35,13 @@ function invoke(action, version, params={}) {
     });
 }
 
+
+
 client.on("message", async function(message) {
-    if(message.author.bot) return; 
-    if(!message.content.startsWith(prefix)) return; 
+    if(message.author.bot||!message.content.startsWith(prefix)) {
+        return;
+    }
+
     const commandBody = message.content.slice(prefix.length); 
     const args = commandBody.split(' '); 
     const command = args.shift().toLowerCase();
@@ -56,6 +60,26 @@ client.on("message", async function(message) {
         const result = await invoke('findCards', 6, {"query": `deck:${args}`});
         message.reply(`These are the cards in ${args}: ${result}`);
     }
+
+
+    //Schedule Section
+    
+    if (command === "CreateSchedule") {//Allows user to create a schedule
+    
+    
+    }else if (command === "RetrieveSchedule") {//Allows user to check a schedule given a name
+        
+        
+    }else if (command === "DisplayMySchedules") {//Allows user to check a schedule given a name
+        
+
+    }else if (command === "DeleteSchedule") {//Allows user to delete a schedule given a name
+
+
+    }else{//If the command does not exist, an error message is displayed and a guide to reinform the user will be opened
+        message.reply('Sorry, I do not recognize that command...');
+    }
+    
 
 }); 
 
