@@ -1,8 +1,13 @@
 const Discord = require("discord.js"); 
 const config = require('./config.json');
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest; 
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const ytdl = require("ytdl-core");
+const {Translate} = require('@google-cloud/translate').v2;
+const translate = new Translate();
 const client = new Discord.Client();
 const prefix = "!"; 
+
+var servers = {};
 
 function invoke(action, version, params={}) {
     return new Promise((resolve, reject) => {
@@ -34,6 +39,38 @@ function invoke(action, version, params={}) {
         xhr.send(JSON.stringify({action, version, params}));
     });
 }
+
+async function translateText(message, text, tar) {
+    const toText = text;
+    const target = tar;
+
+    let [translations] = await translate.translate(toText, target);
+    translations = Array.isArray(translations) ? translations : [translations];
+    translations.forEach((translation, i) => {
+      message.channel.send(`(${target}) ${translation}`);
+    });
+}
+
+async function listLanguages(message) {
+    let [languages] = await translate.getLanguages();
+    languages.forEach((language, i) => {
+        message.channel.send(language.name + " (" + language.code + ")");
+    });
+}
+
+function makeChannels(message) {
+    roomStarter = new String(message.author.username)
+    channelName = '-study';
+    message.guild.channels.create(roomStarter.concat(channelName), { reason: 'Needed a cool new channel' });
+    message.guild.channels.create(roomStarter.concat(channelName), {
+        type: 'voice',
+    });
+
+}
+
+client.on('ready', () => {
+    console.log('AnkiBot is connected to the server');
+});
 
 client.on("message", async function(message) {
     if(message.author.bot) return; 
