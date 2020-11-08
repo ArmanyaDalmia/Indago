@@ -53,50 +53,69 @@ client.on("message", async function(message) {
     if (command == "ping"){ 
         const timeTaken = Date.now() - message.createdTimestamp; 
         message.reply(`Daniel's a bitch! This message had a latency of ${timeTaken} ms.`); 
-    }
-
-    if (command == "mydecks"){
+    } else if (command == "mydecks"){
         const result = await invoke('deckNames', 6);
         message.reply(`These are your current decks: ${result}`);
-    }
-
-    if (command == "listcards"){ 
+    } else if (command == "listcards"){ 
         const result = await invoke('findCards', 6, {"query": `deck:${args}`});
         message.reply(`These are the cards in ${args}: ${result}`);
-    }
+    } else if (command == "createaccount") {
+        message.author.send("Please use the command \"!authorize\" (without the quotations) to enter your email and password separated by a space");
+    } else if (command == "authorize") {
 
-    if (command == "createaccount") {
-        
+        let tempArgs = args;
+        const myUsername = tempArgs.split(" ", 1);
+        tempArgs = tempArgs.replace(myUsername + " ", "");
+        const myPassword = tempArgs
+
         var options = {
             method: 'POST',
             uri: 'https://ankiweb.net/account/register',
             simple: false,
             form: {
-                username: 'temp@myinbox.icu',
-                username2: 'temp@myinbox.icu',
-                password: 'temp'
+                username: `${myUsername}`,
+                username2: `${myUsername}`,
+                password: `${myPassword}`
             }
         };
 
-        var options2 = {
-            method: 'POST',
-            uri: 'https://ankiweb.net/account/terms',
-            simple: false,
-            form: {
-            }
-        }
+        // var options2 = {
+        //     uri: 'https://ankiweb.net/account/terms',
+        //     simple: false,
+        //     transform: function (body) {
+        //         return cheerio.load(body);
+        //     }
+        // }
+
+        // var options3 = {
+        //     method: "POST",
+        //     uri: 'https://ankiweb.net/account/terms',
+        //     simple: false,
+        //     form: {}
+        // }
         
         request(options)
             .then(function (body) {
+                console.log("Account has been created");
                 console.log(body);
-                return request(options2);
+                //return request(options2);
             })
-            .then(function (body) {
-                console.log(body);
-            })
+            // .then(function ($) {
+            //     $('input[type="checkbox"]').prop('checked', true);
+            //     console.log($(':checkbox').is(':checked'));
+            //     return request(options3);
+            // })
+            // .then(function (body) {
+            //     console.log(body);
+            // })
             .catch(function (err) {
                 console.error(err);
             });
+
+        message.author.send("Please go to https://ankiweb.net/account/login to complete your account creation.");
+        message.author.send("After logging in with your provided credentials, you will be directed to accept the terms and conditions.");
+        message.author.send("Lastly, you will have to verify your email address after which you're all setup!");
+
     }
 
 }); 
