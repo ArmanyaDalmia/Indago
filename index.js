@@ -78,6 +78,7 @@ function invoke(action, version, params={}) {
     });
 }
 
+//Translates text to target language
 async function translateText(message, text, tar) {
     const toText = text;
     const target = tar;
@@ -89,6 +90,7 @@ async function translateText(message, text, tar) {
     });
 }
 
+//List all available languages for translation
 async function listLanguages(message) {
     let [languages] = await translate.getLanguages();
     languages.forEach((language, i) => {
@@ -96,6 +98,7 @@ async function listLanguages(message) {
     });
 }
 
+//Creates new text and voice channels for user
 function makeChannels(message) {
     roomStarter = new String(message.author.username)
     channelName = '-study';
