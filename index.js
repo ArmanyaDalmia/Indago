@@ -76,6 +76,8 @@ client.on("message", async function(message) {
     if(message.author.bot) return; 
     if(!message.content.startsWith(prefix)) return; 
 
+    const d_args = let args = message.content.substring(PREFIX.length).split(" ");
+    
     const commandBody = message.content.slice(prefix.length); 
 
     const tempCommand = commandBody.split(" ", 1);
@@ -96,7 +98,81 @@ client.on("message", async function(message) {
         const result = await invoke('findCards', 6, {"query": `deck:${args}`});
         message.reply(`These are the cards in ${args}: ${result}`);
     }
+    
+    switch (args[0]) {
+        case 'play':
+            function play(connection, message) {
+                var server = servers[message.guild.id];
+                if (!server.queue[1]) {
+                    server.dispatcher = connection.play(ytdl(server.queue[0], { filter: "audioonly" }));
+                    server.dispatcher.on("finish", function() {
+                        server.queue.shift();
+                        if (server.queue[0]) {
+                            play(connection, message);
+                        } else {
+                            server.queue.push(args[1]);
+                        }
+                    });
+                }
+            }
 
+            if (!args[1]) {
+                message.channel.send("Provide a link");
+                return;
+            }
+
+            if (!message.member.voice.channel) {
+                message.channel.send("You must be in a channel to play the bot");
+                return;
+            }
+
+            if (!servers[message.guild.id]) servers[message.guild.id] = {
+                queue: []
+            }
+
+            var server = servers[message.guild.id];
+            server.queue.push(args[1]);
+
+            if (!message.guild.voiceConnection) message.member.voice.channel.join().then(function(connection) {
+                play(connection, message);
+                })
+            break;
+
+        case 'skip':
+            var server = servers[message.guild.id];
+            if (server.dispatcher) server.dispatcher.end();
+            message.channel.send("Skipping song");
+            break;
+
+        case 'stop':
+            var server = servers[message.guild.id];
+            if (message.guild.voice.connection) {
+                for (var i = server.queue.length - 1; i >= 0; i--) {
+                    server.queue.splice(i, 2);
+                }
+
+                server.dispatcher.end();
+                message.channel.send("Stopping song");
+            }
+
+        case 'dc':
+            connection.disconnect();
+
+        case 'study':
+            makeChannels(message);
+            message.channel.send("Join your study channels");
+
+        case 'languages':
+            listLanguages(message);
+
+        case 'translate':
+            text = message.content.substring(message.content.indexOf(" ") + 1);
+            transArg = args[1];
+            text = text.substring(text.indexOf(" ") + 1);
+            translateText(message, text, transArg);
+    }
+
+    if (message.guild.connection) message.guild.voice.connection.disconnect();
 }); 
 
 client.login(config.BOT_TOKEN); 
