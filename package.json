@@ -1,14 +1,19 @@
 {
-  "name": "ankibot",
+  "name": "Indago",
   "version": "1.0.0",
   "description": "Discord Bot that makes use of AnkiConnect to bring your Anki decks to your Discord servers!",
   "main": "index.js",
+  "engines": {
+    "node": "14.15.4",
+    "npm": "6.14.10"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ArmanAth/AnkiBot.git"
+    "url": "git+https://github.com/ArmanyaDalmia/Indago.git"
   },
   "keywords": [
     "discord",
@@ -16,21 +21,24 @@
     "anki",
     "js",
     "node",
-    "study"
+    "study",
+    "heroku"
   ],
-  "author": "Arman Atharinejad, Stephen Wang, David Tran // github.com/ArmanAth, github.com/Stephenwang3081, github.com/davidtran001",
+  "author": "Armanya Dalmia // github.com/ArmanyaDalmia",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ArmanAth/AnkiBot/issues"
+    "url": "https://github.com/ArmanyaDalmia/Indago/issues"
   },
-  "homepage": "https://github.com/ArmanAth/AnkiBot#readme",
+  "homepage": "https://github.com/ArmanyaDalmia/Indago#readme",
   "dependencies": {
     "@google-cloud/translate": "^6.0.3",
     "cheerio": "^1.0.0-rc.3",
     "discord.js": "^12.4.1",
+    "dotenv": "^8.2.0",
     "opusscript": "0.0.7",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
+    "save": "^2.4.0",
     "tough-cookie": "^4.0.0",
     "xmlhttprequest": "^1.8.0",
     "ytdl-core": "^4.0.3"
