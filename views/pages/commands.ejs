@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../template/head'); %>
+</head>
+<body class="container">
+
+<header>
+    <%- include('../template/navigation'); %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>Indago Commands</h1>
+        <p>Here are a list of the commands currently supported by Indago (Indago uses the '!' as it's prefix):</p>
+        <ul>
+            <% help_text.forEach(function(line) { %>
+                <li>
+                    <%= line %>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</main>
+
+<footer>
+    <%- include('../template/footer'); %>
+</footer>
+
+</body>
+</html>

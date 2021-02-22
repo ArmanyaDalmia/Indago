@@ -681,14 +681,53 @@ app.use(express.static(__dirname + "/public"));
 
 // set the home page route
 app.get("/", (request, response) => {
+  let client_id = process.env.CLIENT_ID;
   // ejs render automatically looks in the views folder
-  response.render("pages/home");
+  response.render("pages/home", { client_id: client_id });
 });
 
 // set the about page route
 app.get("/about", (request, response) => {
+  let client_id = process.env.CLIENT_ID;
   // ejs render automatically looks in the views folder
-  response.render("pages/about");
+  response.render("pages/about", { client_id: client_id });
+});
+
+// set the commands page route
+app.get("/commands", (request, response) => {
+  let client_id = process.env.CLIENT_ID;
+  let help_text = [
+    "!help - Get a list of all the command accepted by Indago",
+    "!mydecks - Get a list of all the decks you currently have on your Anki account",
+    "!quizall (deck name) - Start a quiz on the specified Anki deck, where everyone on the server can try to answer",
+    "!quizme (deck name) - Start a quiz on the specified Anki deck, where only you can try to answer",
+    "!quizcontest (deck name) - Start a quiz on the specified Anki deck, where everyone can compete for points until the quiz is ended!",
+    "!play (youtube-url) - Plays audio stream from this youtube link, also puts songs in queue",
+    "!skip - Skips current song",
+    "!stop - Stops audio",
+    "!study - Creates new text and voice channel for user",
+    "!languages - Shows list of available languages to translate",
+    "!translate (language, text) - Translates text to desired language",
+    "!ListCards (deck ID) - List IDs of cards in specified deck",
+    "!CreateDeck (name) - Creates deck with specified name",
+    "!sync - Syncs your Anki account with the Anki problem on your computer",
+    "!MentalHealh - List of mental health resources",
+    "!math (expression) - Solves simple math expressions",
+    "!CreateSchedule (Schedule Name) - Creates a schedule that can be held and defines it with a name, that the user can add to.",
+    "!FillSchedule (name, task 1, task 2, etc...) given a name, fills in tasks that must be done in the list.",
+    "!RetrieveSchedule (name) -given a name, will display all the tasks listed within the schedule that the user can see and be reminded of.",
+    "!DisplayMySchedules - displays all the schedules that the user has so they can pick which one to view",
+    "!DeleteSchedule (name) - given a name, completely wipes a schedule once it is no longer of use",
+    "!VerifyAccount - sends private message prompting user to use !login",
+    "!CreateAccount - sends private message prompting user to use !newuser",
+    "!NewUser (email, password) - Create a new user through AnkiWeb, requires user to go to website to accept terms and conditions and verify email",
+    "!login (email, password) - Use command to log into AnkiWeb account",
+  ];
+  // ejs render automatically looks in the views folder
+  response.render("pages/commands", {
+    client_id: client_id,
+    help_text: help_text,
+  });
 });
 
 app.listen(port, () => {
