@@ -6,3 +6,5 @@
  Allows users to create multiple personal schedules which they can keep updated and have read out to them. 
  
  Users can also make use of the translation function to translate a given input to any language, and apart from the productivity functions the bot can also come into a voice     channel and play audio from YouTube videos!
+ 
+ Check it out at https://indago-discord.herokuapp.com/!
